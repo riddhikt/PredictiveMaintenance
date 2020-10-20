@@ -272,12 +272,12 @@ def fft_graph():
     #plt.show()
     now= datetime.now()
     current_time = now.strftime("%Y-%m-%d %H-%M-%S")
-    plt.savefig('Graphs/'+current_time+'.png')
+    plt.savefig('FFTGraphs/'+current_time+'.png')
 
     novi = Toplevel()
     canvas = Canvas(novi, width=1120, height=480)
     canvas.pack(expand=YES, fill=BOTH)
-    gif1 = PhotoImage(file='Graphs/'+current_time+'.png')
+    gif1 = PhotoImage(file='FFTGraphs/'+current_time+'.png')
     # image not visual
     canvas.create_image(50, 10, image=gif1, anchor=NW)
     # assigned the gif1 to the canvas object
@@ -289,6 +289,48 @@ def fft_graph():
 button1.grid(row=2, column=0)
 button2 = Button(root, text="Check", width=20, height=3, bg="lightblue", command=check)
 button2.grid(row=2, column=1)
-button3 = Button(root, text="Display Graph", width=20, height=3, bg="lightblue", command=fft_graph)
+button3 = Button(root, text="Display FFT Graph", width=20, height=3, bg="lightblue", command=fft_graph)
 button3.grid(row=2, column=2,sticky=W,padx=30)
+
+#Vibration Plot
+def vibplot():
+    data_dir = folder_selected
+    merged_data = pd.DataFrame()
+
+    # Looping over all files from 12th Feb to 19th Feb
+    for filename in os.listdir(data_dir):
+        dataset = pd.read_csv(os.path.join(data_dir, filename), sep='\t')
+        dataset_mean_abs = np.array(dataset.abs().mean())
+        dataset_mean_abs = pd.DataFrame(dataset_mean_abs.reshape(1, 4))
+        dataset_mean_abs.index = [filename]
+        merged_data = merged_data.append(dataset_mean_abs)
+
+    # Renaming columns
+    merged_data.columns = ['Bearing 1', 'Bearing 2', 'Bearing 3', 'Bearing 4']
+    # Identifying index as datetime format
+    merged_data.index = pd.to_datetime(merged_data.index, format='%Y.%m.%d.%H.%M.%S')
+    merged_data = merged_data.sort_index()
+    merged_data.to_csv('merged_dataset_BearingTest_2.csv')
+    # Visualising Data
+    ax = merged_data.plot(figsize=(12, 6), title="Vibration Data", legend=True)
+    ax.set(xlabel="Year-Month-Date", ylabel="Vibration")
+
+    now = datetime.now()
+    current_time = now.strftime("%Y-%m-%d %H-%M-%S")
+    plt.savefig('VibrationGraphs/' + current_time + '.png')
+    novi = Toplevel()
+    canvas = Canvas(novi, width=1300, height=800)
+    canvas.pack(expand=YES, fill=BOTH)
+    gif1 = PhotoImage(file='VibrationGraphs/' + current_time + '.png')
+    # image not visual
+    canvas.create_image(50, 10, image=gif1, anchor=NW)
+    # assigned the gif1 to the canvas object
+    canvas.gif1 = gif1
+
+button4 = Button(root, text="Display Vibration Graph", width=20, height=3, bg="lightblue", command=vibplot)
+button4.grid(row=2, column=3,sticky=W,padx=30)
+
+instruction = Label(root, text="Steps: \n 1)Import the Folder in which dataset is present \n 2)Click on check to get the Output \n 3)Display FFT Graph for displaying Frequency graph \n 4)Display Vibration Graph for graph with vibration")
+instruction.grid(row=3, column=4, sticky=W)
+
 root.mainloop()
