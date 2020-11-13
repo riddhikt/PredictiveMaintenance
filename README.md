@@ -3,9 +3,9 @@
 ### System Requirements:
 * Python 2.7 or above
 * Libraries Used:
-  * 1)Tensorflow 
+  * 1)tensorflow 
   * 2)keras
-  * 3)Tkinter
+  * 3)tkinter
   * 4)pandas
   * 5)numpy
   * 6)scipy
@@ -29,7 +29,7 @@
   * 6.Bearing Dataset : Download the dataset from the above link and unzip it in this directory
 
 * How to run?:
-  * 1.First Train the model using LogisticRegressionTraining.py, it will save the model in the same directory i.e logisticRegressionModel.npy (Change file paths inside the code for    training on custom dataset)
+  * 1.First Train the model using LogisticRegressionTraining.py, it will save the model in the same directory i.e logisticRegressionModel.npy (Change file paths inside the code for training on custom dataset)
   * 2.Run FFT_LogiRegress.py to get the GUI, it contains 3 buttons.
       1.Import: used to select the folder for the testing data
       2.Check: Passes the data to the model and displays the output
